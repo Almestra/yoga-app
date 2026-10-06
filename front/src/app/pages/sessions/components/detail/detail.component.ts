@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,6 +33,7 @@ export class DetailComponent implements OnInit {
   private teacherService = inject(TeacherService);
   private matSnackBar = inject(MatSnackBar);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
     this.sessionId = this.route.snapshot.paramMap.get('id')!;
@@ -50,19 +52,23 @@ export class DetailComponent implements OnInit {
   public delete(): void {
     this.sessionApiService
       .delete(this.sessionId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((_: any) => {
-          this.matSnackBar.open('Session deleted !', 'Close', { duration: 3000 });
-          this.router.navigate(['sessions']);
-        }
-      );
+        this.matSnackBar.open('Session deleted !', 'Close', { duration: 3000 });
+        this.router.navigate(['sessions']);
+      });
   }
 
   public participate(): void {
-    this.sessionApiService.participate(this.sessionId, this.userId).subscribe(_ => this.fetchSession());
+    this.sessionApiService.participate(this.sessionId, this.userId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(_ => this.fetchSession());
   }
 
   public unParticipate(): void {
-    this.sessionApiService.unParticipate(this.sessionId, this.userId).subscribe(_ => this.fetchSession());
+    this.sessionApiService.unParticipate(this.sessionId, this.userId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(_ => this.fetchSession());
   }
 
   private fetchSession(): void {
@@ -73,7 +79,8 @@ export class DetailComponent implements OnInit {
           this.session = session;
           this.isParticipate = session.users.some(u => u === this.sessionService.sessionInformation!.id);
         }),
-        switchMap((session: Session) => this.teacherService.detail(session.teacher_id.toString()))
+        switchMap((session: Session) => this.teacherService.detail(session.teacher_id.toString())),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((teacher: Teacher) => this.teacher = teacher);
   }

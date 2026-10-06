@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -20,6 +21,7 @@ export class MeComponent {
   private matSnackBar = inject(MatSnackBar);
   private userService = inject(UserService);
   public user$: Observable<User> = this.userService.getById(this.sessionService.sessionInformation!.id.toString());
+  private destroyRef = inject(DestroyRef);
 
   public back(): void {
     window.history.back();
@@ -28,6 +30,7 @@ export class MeComponent {
   public delete(): void {
     this.userService
       .delete(this.sessionService.sessionInformation!.id.toString())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((_) => {
         this.matSnackBar.open("Your account has been deleted !", 'Close', { duration: 3000 });
         this.sessionService.logOut();
