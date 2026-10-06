@@ -7,8 +7,7 @@
         </button>
         @if (!onUpdate) {
           <h1>Create session</h1>
-        }
-        @if (onUpdate) {
+        } @else {
           <h1>Update session</h1>
         }
       </div>
@@ -27,7 +26,7 @@
           <mat-form-field appearance="outline">
             <mat-label>Teacher</mat-label>
             <mat-select ngDefaultControl formControlName="teacher_id">
-              @for (teacher of teachers$ | async; track teacher) {
+              @for (teacher of teachers$ | async; track teacher.id) {
                 <mat-option [value]="teacher.id">
                   {{teacher.firstName}} {{teacher.lastName}}
                 </mat-option>

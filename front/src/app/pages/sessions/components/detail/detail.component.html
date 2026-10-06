@@ -15,16 +15,14 @@
                 <mat-icon>delete</mat-icon>
                 <span class="ml1">Delete</span>
               </button>
-            }
-            @if (!isAdmin) {
+            } @else {
               <div>
                 @if (!isParticipate) {
                   <button mat-raised-button color="primary" (click)="participate()">
                     <mat-icon>person_add</mat-icon>
                     <span class="ml1">Participate</span>
                   </button>
-                }
-                @if (isParticipate) {
+                } @else {
                   <button mat-raised-button color="warn" (click)="unParticipate()">
                     <mat-icon>person_remove</mat-icon>
                     <span class="ml1">Do not participate</span>

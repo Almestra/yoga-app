@@ -15,8 +15,7 @@
           <p>Email: {{ user.email }}</p>
           @if (user.admin) {
             <p class="my2">You are admin</p>
-          }
-          @if (!user.admin) {
+          } @else {
             <div fxLayout="column" class="my2" fxLayoutAlign="center center">
               <p>Delete my account:</p>
               <button mat-raised-button color="warn" (click)="delete()">
