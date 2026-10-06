@@ -62,13 +62,13 @@ export class DetailComponent implements OnInit {
   public participate(): void {
     this.sessionApiService.participate(this.sessionId, this.userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(_ => this.fetchSession());
+      .subscribe(() => this.fetchSession());
   }
 
   public unParticipate(): void {
     this.sessionApiService.unParticipate(this.sessionId, this.userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(_ => this.fetchSession());
+      .subscribe(() => this.fetchSession());
   }
 
   private fetchSession(): void {

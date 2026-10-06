@@ -59,8 +59,8 @@ export class RegisterComponent {
     this.authService.register(registerRequest)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (_: void) => this.router.navigate(['/login']),
-        error: _ => this.onError = true,
+        next: () => this.router.navigate(['/login']),
+        error: () => this.onError = true,
       });
   }
 

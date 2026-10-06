@@ -26,7 +26,7 @@ export class FormComponent implements OnInit {
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
 
-  public onUpdate: boolean = false;
+  public onUpdate = false;
   public sessionForm: FormGroup | undefined;
   public teachers$ = this.teacherService.all();
   private id: string | undefined;
@@ -55,12 +55,12 @@ export class FormComponent implements OnInit {
       this.sessionApiService
         .create(session)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((_: Session) => this.exitPage('Session created !'));
+        .subscribe(() => this.exitPage('Session created !'));
     } else {
       this.sessionApiService
         .update(this.id!, session)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((_: Session) => this.exitPage('Session updated !'));
+        .subscribe(() => this.exitPage('Session updated !'));
     }
   }
 

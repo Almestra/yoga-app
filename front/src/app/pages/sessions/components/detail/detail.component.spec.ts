@@ -12,7 +12,6 @@ import { DetailComponent } from './detail.component';
 describe('DetailComponent', () => {
   let component: DetailComponent;
   let fixture: ComponentFixture<DetailComponent>;
-  let service: SessionService;
 
   const mockSessionService = {
     sessionInformation: {
@@ -33,7 +32,6 @@ describe('DetailComponent', () => {
       providers: [{ provide: SessionService, useValue: mockSessionService }],
     })
       .compileComponents();
-      service = TestBed.inject(SessionService);
     fixture = TestBed.createComponent(DetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

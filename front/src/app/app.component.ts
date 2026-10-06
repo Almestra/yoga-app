@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './core/service/auth.service';
