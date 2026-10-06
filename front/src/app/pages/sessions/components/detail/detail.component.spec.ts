@@ -4,8 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule, } from '@angular/router/testing';
 import { expect } from '@jest/globals';
-import { SessionService } from '../../../../core/service/session.service';
 
+import { SessionService } from '../../../../core/service/session.service';
 import { DetailComponent } from './detail.component';
 
 

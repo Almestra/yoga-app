@@ -1,13 +1,14 @@
+import { CommonModule } from "@angular/common";
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+
 import { User } from '../../core/models/user.interface';
 import { SessionService } from '../../core/service/session.service';
 import { UserService } from '../../core/service/user.service';
 import { MaterialModule } from "../../shared/material.module";
-import { CommonModule } from "@angular/common";
 
 @Component({
   selector: 'app-me',
