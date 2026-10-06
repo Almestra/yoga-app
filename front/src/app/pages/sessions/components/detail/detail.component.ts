@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs';
 import { Teacher } from '../../../../core/models/teacher.interface';
 import { SessionService } from '../../../../core/service/session.service';
 import { TeacherService } from '../../../../core/service/teacher.service';
@@ -67,13 +68,14 @@ export class DetailComponent implements OnInit {
   private fetchSession(): void {
     this.sessionApiService
       .detail(this.sessionId)
-      .subscribe((session: Session) => {
-        this.session = session;
-        this.isParticipate = session.users.some(u => u === this.sessionService.sessionInformation!.id);
-        this.teacherService
-          .detail(session.teacher_id.toString())
-          .subscribe((teacher: Teacher) => this.teacher = teacher);
-      });
+      .pipe(
+        tap((session: Session) => {
+          this.session = session;
+          this.isParticipate = session.users.some(u => u === this.sessionService.sessionInformation!.id);
+        }),
+        switchMap((session: Session) => this.teacherService.detail(session.teacher_id.toString()))
+      )
+      .subscribe((teacher: Teacher) => this.teacher = teacher);
   }
 
 }
