@@ -192,9 +192,9 @@ The notes under a table explain the problems that need it. Line numbers refer to
 
 The blocks, in order of priority:
 
-### 6.1 Make the project runnable by anyone
+### 6.1 Make the project runnable without workarounds
 
-Done on `chore/setup` (**TOOL-01**, **TOOL-02**, **TOOL-06**): the duplicate plugin declaration is removed, which leaves the effective POM unchanged; a script inserts two teachers; the Postman `login` request stores its token in a collection variable. The request data of the collection remain to be aligned with the seed data.
+Done on `chore/setup` (**TOOL-01**, **TOOL-02**, **TOOL-06**): the duplicate plugin declaration is removed, which leaves the effective POM unchanged; a script inserts two teachers; the Postman `login` request stores its token in a collection variable, and the sample values of the collection are aligned with the seed data.
 
 ### 6.2 Front refactoring
 

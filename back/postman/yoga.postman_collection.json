@@ -11,6 +11,19 @@
       "item": [
         {
           "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    pm.collectionVariables.set(\"token\", pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -174,7 +187,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"session 1\",\n    \"date\": \"2012-01-01\",\n    \"teacher_id\": 5,\n    \"users\": null,\n    \"description\": \"my description\"\n}",
+              "raw": "{\n    \"name\": \"session 1\",\n    \"date\": \"2012-01-01\",\n    \"teacher_id\": 1,\n    \"users\": null,\n    \"description\": \"my description\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -202,7 +215,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"session 1\",\n    \"date\": \"2012-01-01T00:00:00.000+00:00\",\n    \"teacher_id\": 1,\n    \"description\": \"my description\",\n    \"users\": []\n}",
+              "raw": "{\n    \"name\": \"session 1\",\n    \"date\": \"2012-01-01T00:00:00.000+00:00\",\n    \"teacher_id\": 2,\n    \"description\": \"my description\",\n    \"users\": []\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -370,7 +383,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "1"
+                  "value": "2"
                 }
               ]
             }
@@ -385,7 +398,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5b2dhQHN0dWRpby5jb20iLCJpYXQiOjE2NjE3ODg0OTEsImV4cCI6MTY2MTg3NDg5MX0.ZIxe_D9aSVixqeeosAsI8_724qETl-eqGU_CwSEsumdd2VC0nWh6xZR2c3cWprOwaAeCMtNHp4OQUOcXkkxfEg",
+        "value": "{{token}}",
         "type": "string"
       }
     ]
@@ -408,6 +421,13 @@
           ""
         ]
       }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
     }
   ]
 }
