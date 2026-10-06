@@ -9,7 +9,7 @@
       </div>
     </mat-card-title>
     <mat-card-content>
-      <div *ngIf="user" fxLayout="column" fxLayoutAlign="start center">
+      <div *ngIf="user$ | async as user" fxLayout="column" fxLayoutAlign="start center">
         <p>Name: {{ user.firstName }} {{ user.lastName | uppercase }}</p>
         <p>Email: {{ user.email }}</p>
         <p *ngIf="user.admin" class="my2">You are admin</p>
