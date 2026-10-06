@@ -6,18 +6,11 @@ import { expect } from '@jest/globals';
 
 import { AppComponent } from './app.component';
 
-
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        HttpClientModule,
-        MatToolbarModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterTestingModule, HttpClientModule, MatToolbarModule],
+      declarations: [AppComponent],
     }).compileComponents();
   });
 

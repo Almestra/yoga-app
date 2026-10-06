@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
-import { UnauthGuard } from "./guards/unauth.guard";
-import { AuthGuard } from "./guards/auth.guard";
-import { MeComponent } from "./components/me/me.component";
-import { NotFoundComponent } from "./pages/not-found/not-found.component";
-import { LoginComponent } from "./pages/login/login.component";
-import { RegisterComponent } from "./pages/register/register.component";
-import { ListComponent } from "./pages/sessions/components/list/list.component";
-import { DetailComponent } from "./pages/sessions/components/detail/detail.component";
-import { FormComponent } from "./pages/sessions/components/form/form.component";
+
+import { MeComponent } from './components/me/me.component';
+import { AuthGuard } from './guards/auth.guard';
+import { UnauthGuard } from './guards/unauth.guard';
+import { LoginComponent } from './pages/login/login.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { DetailComponent } from './pages/sessions/components/detail/detail.component';
+import { FormComponent } from './pages/sessions/components/form/form.component';
+import { ListComponent } from './pages/sessions/components/list/list.component';
 
 export const routes: Routes = [
   {
@@ -18,12 +19,12 @@ export const routes: Routes = [
   {
     path: 'register',
     canActivate: [UnauthGuard],
-    component: RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: 'login',
     canActivate: [UnauthGuard],
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'sessions',
@@ -50,15 +51,13 @@ export const routes: Routes = [
         component: FormComponent,
         data: { title: 'Sessions - update' },
       },
-      ]
+    ],
   },
   {
     path: 'me',
     canActivate: [AuthGuard],
-    component: MeComponent
+    component: MeComponent,
   },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404' },
 ];
-
-

@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { CdkTreeModule } from '@angular/cdk/tree';
 import { PortalModule } from '@angular/cdk/portal';
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -26,8 +27,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
-import { ReactiveFormsModule } from '@angular/forms';
-
 
 const materialModules = [
   ReactiveFormsModule,
@@ -57,15 +56,11 @@ const materialModules = [
   MatButtonToggleModule,
   MatTreeModule,
   OverlayModule,
-  PortalModule
+  PortalModule,
 ];
 
 @NgModule({
-  imports: [
-    ...materialModules
-  ],
-  exports: [
-    ...materialModules
-  ],
+  imports: [...materialModules],
+  exports: [...materialModules],
 })
-export class MaterialModule { }
+export class MaterialModule {}
