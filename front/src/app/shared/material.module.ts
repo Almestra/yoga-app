@@ -28,7 +28,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 
-
 const materialModules = [
   ReactiveFormsModule,
   CdkTreeModule,
@@ -57,15 +56,11 @@ const materialModules = [
   MatButtonToggleModule,
   MatTreeModule,
   OverlayModule,
-  PortalModule
+  PortalModule,
 ];
 
 @NgModule({
-  imports: [
-    ...materialModules
-  ],
-  exports: [
-    ...materialModules
-  ],
+  imports: [...materialModules],
+  exports: [...materialModules],
 })
-export class MaterialModule { }
+export class MaterialModule {}

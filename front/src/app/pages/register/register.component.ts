@@ -5,13 +5,13 @@ import { Router } from '@angular/router';
 
 import { RegisterRequest } from '../../core/models/registerRequest.interface';
 import { AuthService } from '../../core/service/auth.service';
-import { MaterialModule } from "../../shared/material.module";
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
   selector: 'app-register',
   imports: [MaterialModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
   private authService = inject(AuthService);
@@ -21,48 +21,20 @@ export class RegisterComponent {
   private destroyRef = inject(DestroyRef);
 
   public form = this.fb.group({
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.email
-      ]
-    ],
-    firstName: [
-      '',
-      [
-        Validators.required,
-        Validators.min(3),
-        Validators.max(20)
-      ]
-    ],
-    lastName: [
-      '',
-      [
-        Validators.required,
-        Validators.min(3),
-        Validators.max(20)
-      ]
-    ],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.min(3),
-        Validators.max(40)
-      ]
-    ]
+    email: ['', [Validators.required, Validators.email]],
+    firstName: ['', [Validators.required, Validators.min(3), Validators.max(20)]],
+    lastName: ['', [Validators.required, Validators.min(3), Validators.max(20)]],
+    password: ['', [Validators.required, Validators.min(3), Validators.max(40)]],
   });
-
 
   public submit(): void {
     const registerRequest = this.form.value as RegisterRequest;
-    this.authService.register(registerRequest)
+    this.authService
+      .register(registerRequest)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => this.router.navigate(['/login']),
-        error: () => this.onError = true,
+        error: () => (this.onError = true),
       });
   }
-
 }

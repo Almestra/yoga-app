@@ -7,13 +7,13 @@ import { SessionService } from 'src/app/core/service/session.service';
 
 import { LoginRequest } from '../../core/models/loginRequest.interface';
 import { AuthService } from '../../core/service/auth.service';
-import {MaterialModule} from "../../shared/material.module";
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
   selector: 'app-login',
   imports: [MaterialModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   private authService = inject(AuthService);
@@ -26,32 +26,21 @@ export class LoginComponent {
   public onError = false;
 
   public form = this.fb.group({
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.email
-      ]
-    ],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.min(3)
-      ]
-    ]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.min(3)]],
   });
 
   public submit(): void {
     const loginRequest = this.form.value as LoginRequest;
-    this.authService.login(loginRequest)
+    this.authService
+      .login(loginRequest)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response: SessionInformation) => {
           this.sessionService.logIn(response);
           this.router.navigate(['/sessions']);
         },
-        error: () => this.onError = true,
+        error: () => (this.onError = true),
       });
   }
 }

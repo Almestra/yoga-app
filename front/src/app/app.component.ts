@@ -1,17 +1,17 @@
-import {CommonModule} from "@angular/common";
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {Router, RouterModule, RouterOutlet} from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthService } from './core/service/auth.service';
 import { SessionService } from './core/service/session.service';
-import {MaterialModule} from "./shared/material.module";
+import { MaterialModule } from './shared/material.module';
 
 @Component({
   selector: 'app-root',
   imports: [CommonModule, MaterialModule, RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   private authService = inject(AuthService);
@@ -24,6 +24,6 @@ export class AppComponent {
 
   public logout(): void {
     this.sessionService.logOut();
-    this.router.navigate([''])
+    this.router.navigate(['']);
   }
 }

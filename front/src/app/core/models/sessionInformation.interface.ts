@@ -1,4 +1,3 @@
-
 export interface SessionInformation {
   token: string;
   type: string;

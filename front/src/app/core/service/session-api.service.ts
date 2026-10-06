@@ -5,14 +5,12 @@ import { Observable } from 'rxjs';
 import { Session } from '../models/session.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionApiService {
-
   private pathService = 'api/session';
 
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   public all(): Observable<Session[]> {
     return this.httpClient.get<Session[]>(this.pathService);
@@ -41,5 +39,4 @@ export class SessionApiService {
   public unParticipate(id: string, userId: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.pathService}/${id}/participate/${userId}`);
   }
-
 }
