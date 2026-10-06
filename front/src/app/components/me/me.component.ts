@@ -20,7 +20,8 @@ export class MeComponent {
   private sessionService = inject(SessionService);
   private matSnackBar = inject(MatSnackBar);
   private userService = inject(UserService);
-  public user$: Observable<User> = this.userService.getById(this.sessionService.sessionInformation!.id.toString());
+  private userId = this.sessionService.sessionInformation?.id.toString() ?? '';
+  public user$: Observable<User> = this.userService.getById(this.userId);
   private destroyRef = inject(DestroyRef);
 
   public back(): void {
@@ -29,7 +30,7 @@ export class MeComponent {
 
   public delete(): void {
     this.userService
-      .delete(this.sessionService.sessionInformation!.id.toString())
+      .delete(this.userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.matSnackBar.open("Your account has been deleted !", 'Close', { duration: 3000 });

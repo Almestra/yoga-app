@@ -32,15 +32,16 @@ export class FormComponent implements OnInit {
   private id: string | undefined;
 
   ngOnInit(): void {
-    if (!this.sessionService.sessionInformation!.admin) {
+    if (!this.sessionService.sessionInformation?.admin) {
       this.router.navigate(['/sessions']);
     }
     const url = this.router.url;
-    if (url.includes('update')) {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (url.includes('update') && id) {
       this.onUpdate = true;
-      this.id = this.route.snapshot.paramMap.get('id')!;
+      this.id = id;
       this.sessionApiService
-        .detail(this.id)
+        .detail(id)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((session: Session) => this.initForm(session));
     } else {
@@ -51,14 +52,14 @@ export class FormComponent implements OnInit {
   public submit(): void {
     const session = this.sessionForm?.value as Session;
 
-    if (!this.onUpdate) {
+    if (!this.onUpdate || !this.id) {
       this.sessionApiService
         .create(session)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.exitPage('Session created !'));
     } else {
       this.sessionApiService
-        .update(this.id!, session)
+        .update(this.id, session)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.exitPage('Session updated !'));
     }

@@ -36,9 +36,9 @@ export class DetailComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   constructor() {
-    this.sessionId = this.route.snapshot.paramMap.get('id')!;
-    this.isAdmin = this.sessionService.sessionInformation!.admin;
-    this.userId = this.sessionService.sessionInformation!.id.toString();
+    this.sessionId = this.route.snapshot.paramMap.get('id') ?? '';
+    this.isAdmin = this.sessionService.sessionInformation?.admin ?? false;
+    this.userId = this.sessionService.sessionInformation?.id.toString() ?? '';
   }
 
   ngOnInit(): void {
@@ -77,7 +77,7 @@ export class DetailComponent implements OnInit {
       .pipe(
         tap((session: Session) => {
           this.session = session;
-          this.isParticipate = session.users.some(u => u === this.sessionService.sessionInformation!.id);
+          this.isParticipate = session.users.some(u => u === this.sessionService.sessionInformation?.id);
         }),
         switchMap((session: Session) => this.teacherService.detail(session.teacher_id.toString())),
         takeUntilDestroyed(this.destroyRef)
