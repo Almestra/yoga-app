@@ -17,6 +17,7 @@ public interface SessionMapper extends EntityMapper<SessionDto, Session> {
 
     @Mappings({
             @Mapping(source = "description", target = "description"),
+            @Mapping(target = "id", ignore = true),
             @Mapping(target = "teacher", ignore = true),
             @Mapping(target = "users", ignore = true),
     })
