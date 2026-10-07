@@ -91,7 +91,7 @@ public class SessionService {
 
     private Session toEntity(SessionDto sessionDto) {
         Session session = this.sessionMapper.toEntity(sessionDto);
-        session.setTeacher(this.teacherRepository.findById(sessionDto.getTeacher_id()).orElse(null));
+        session.setTeacher(this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(BadRequestException::new));
         session.setUsers(Optional.ofNullable(sessionDto.getUsers()).orElseGet(Collections::emptyList).stream()
                 .map(userId -> this.userRepository.findById(userId).orElse(null))
                 .collect(Collectors.toList()));
