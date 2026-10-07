@@ -55,7 +55,7 @@ public class SessionController {
     public ResponseEntity<?> create(@Valid @RequestBody SessionDto sessionDto) {
         log.info(sessionDto);
 
-        Session session = this.sessionService.create(this.sessionMapper.toEntity(sessionDto));
+        Session session = this.sessionService.create(sessionDto);
 
         log.info(session);
         return ResponseEntity.ok().body(this.sessionMapper.toDto(session));
@@ -63,7 +63,7 @@ public class SessionController {
 
     @PutMapping("{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody SessionDto sessionDto) {
-        Session session = this.sessionService.update(id, this.sessionMapper.toEntity(sessionDto));
+        Session session = this.sessionService.update(id, sessionDto);
 
         return ResponseEntity.ok().body(this.sessionMapper.toDto(session));
     }
