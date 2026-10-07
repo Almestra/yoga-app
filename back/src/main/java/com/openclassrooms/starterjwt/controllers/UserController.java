@@ -32,20 +32,12 @@ public class UserController {
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
         User user = this.userService.findById(id);
 
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok().body(this.userMapper.toDto(user));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> save(@PathVariable("id") Long id) {
         User user = this.userService.findById(id);
-
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

@@ -28,10 +28,6 @@ public class TeacherController {
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
         Teacher teacher = this.teacherService.findById(id);
 
-        if (teacher == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok().body(this.teacherMapper.toDto(teacher));
     }
 

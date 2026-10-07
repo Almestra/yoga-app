@@ -39,7 +39,7 @@ public class SessionService {
     }
 
     public void delete(Long id) {
-        this.sessionRepository.deleteById(id);
+        this.sessionRepository.delete(this.getById(id));
     }
 
     public List<Session> findAll() {
@@ -47,7 +47,7 @@ public class SessionService {
     }
 
     public Session getById(Long id) {
-        return this.sessionRepository.findById(id).orElse(null);
+        return this.sessionRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public Session update(Long id, SessionDto sessionDto) {
