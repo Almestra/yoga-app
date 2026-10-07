@@ -22,10 +22,10 @@ The application starts and its main journeys work, but:
 4. **Some defects block the user or damage data.** A teacher can teach only one session, editing a session removes its participants, and a failed request gives no feedback.
 5. **The test and build tooling is incomplete or broken.** 8 of the 12 front spec files fail, the back has no test, the coverage rules contradict the brief, and the back could not be built with a recent version of Maven.
 
-**48 problems identified**:
+**50 problems identified**:
 - 🔴 21 high: the user is blocked or receives wrong information, data or access rights are at risk, or a criterion of the brief is not met.
-- 🟠 15 medium: technical debt, or a defect that hinders some users without preventing them from using the application.
-- 🟡 12 low: readability, style, modernisation, or a gap with no effect on use.
+- 🟠 16 medium: technical debt, or a defect that hinders some users without preventing them from using the application.
+- 🟡 13 low: readability, style, modernisation, or a gap with no effect on use.
 
 ## 2. Approach
 
@@ -93,8 +93,9 @@ The notes under a table explain the problems that need it. Line numbers refer to
 |---|---|:-:|
 | **API-01** — Error handling copied into the controllers: 8 `try/catch (NumberFormatException)` and `null` checks that return 404 | `SessionController`, `TeacherController`, `UserController` | 🔴 |
 | **API-02** — Errors handled by Spring reach the client as 401 with an empty body, even with a valid token | `WebSecurityConfig.java` l. 61-68 | 🔴 |
-| **API-03** — `POST /api/session` accepts an unknown `teacher_id`: the session is stored without teacher, and its detail page then fails | `SessionMapper.java` l. 30, `detail.component.ts` l. 74 | 🔴 |
-| **API-04** — The response of `PUT /api/session/{id}` contains `"createdAt": null`, although the stored date is intact | `SessionService.java` l. 41-44 | 🟡 |
+| **API-03** — Creating or updating a session accepts an unknown `teacher_id`: the session is stored without teacher, and its detail page then fails | `SessionMapper.java` l. 30, `detail.component.ts` l. 74 | 🔴 |
+| **API-04** — `POST /api/session` uses the `id` of the request body: if a session has that `id`, it is overwritten and loses its participants | `SessionMapper.java` l. 33, `SessionService.java` l. 25-27 | 🟠 |
+| **API-05** — The response of `PUT /api/session/{id}` contains `"createdAt": null`, although the stored date is intact | `SessionService.java` l. 41-44 | 🟡 |
 | **ARCH-01** — `AuthController` calls `UserRepository` directly and holds the registration and login logic | `AuthController.java` l. 53, 68-81 | 🔴 |
 | **ARCH-02** — Business rules in controllers: ownership check before deleting an account, existence checks before deletions | `UserController.java` l. 49-61, `SessionController.java` l. 82-88 | 🔴 |
 | **ARCH-03** — `SessionMapper` calls `TeacherService` and `UserService`, and turns an unknown identifier into `null` | `SessionMapper.java` l. 30-31 | 🟠 |
@@ -126,7 +127,8 @@ The notes under a table explain the problems that need it. Line numbers refer to
 | **CLEAN-01** — Dead code: `AuthEntryPointJwt` entirely commented out but still a `@Component`, unused injections in `AppComponent` and `DetailComponent` | several files | 🟡 |
 | **CLEAN-02** — Misleading names: the two `DELETE` handlers are called `save` | `SessionController.java` l. 80, `UserController.java` l. 47 | 🟡 |
 | **CLEAN-03** — Inconsistent injection: `@Autowired` fields next to constructor injection on the back; guard constructors next to `inject()` on the front | `SessionMapper`, `AuthTokenFilter`, `WebSecurityConfig`, `guards/` | 🟡 |
-| **CLEAN-04** — Untyped responses (`ResponseEntity<?>`), whole objects written to the log (`log.info(sessionDto)`), deprecated jjwt calls | controllers, `JwtUtils.java` | 🟡 |
+| **CLEAN-04** — Untyped responses (`ResponseEntity<?>`), whole objects written to the log (`log.info(sessionDto)`), deprecated jjwt and Spring Security calls | controllers, `security/` | 🟡 |
+| **CLEAN-05** — Annotations where they do not apply: `@Repository` on Spring Data interfaces, `@Component` on MapStruct mappers, `@NonNull` on a primitive | `repository/`, `mapper/`, `User.java` l. 68, `UserDto.java` l. 32 | 🟡 |
 
 ### 3.7 Tooling and dependencies
 
@@ -183,6 +185,7 @@ The notes under a table explain the problems that need it. Line numbers refer to
 ## 5. Limits of the project
 
 - **Angular 19**: the project stays on the version delivered with the starter, although it is no longer maintained (131 vulnerabilities reported by npm, 8 of them in Angular itself; most can only be fixed by a major upgrade).
+- **Spring Boot 3.5**: the project stays on the version delivered with the starter, although its free support ended on 30 June 2026.
 - **Login state**: kept in memory only, so reloading the page logs the user out. This is the safest place for the token; it is kept as is.
 
 ## 6. Plan
@@ -208,7 +211,8 @@ Done on `chore/setup` (**TOOL-01**, **TOOL-02**, **TOOL-06**): the duplicate plu
 - **Errors** (**API-01**): a `@RestControllerAdvice` maps each exception to its status; the services throw `NotFoundException` and `BadRequestException`; identifiers are received as `Long`.
 - **Layers** (**ARCH-01** to **ARCH-03**): an authentication service takes over the logic of `AuthController`; ownership and existence checks move to the services; the mapper no longer calls services.
 - **Unknown teacher** (**API-03**): a session with an unknown `teacher_id` is refused with 400 instead of being stored without teacher.
-- **Session update** (**API-04**): the response returns the stored creation date instead of `null`.
+- **Session identifier** (**API-04**): the `id` of the request body is ignored, so a creation never overwrites an existing session.
+- **Session update** (**API-05**): the response returns the stored creation date instead of `null`.
 - **Maven Wrapper** (**TOOL-09**): added with this block.
 
 This block also restores the real error codes (**API-02**): an invalid request body answers 400 instead of 401, an unknown session or user 404, leaving a session without being enrolled 400. These are deliberate changes, not regressions. Every case, before and after, is listed [here](MANUAL-TESTS.md#3-api-error-cases).

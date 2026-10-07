@@ -1,33 +1,45 @@
 package com.openclassrooms.starterjwt.services;
 
+import com.openclassrooms.starterjwt.dto.SessionDto;
 import com.openclassrooms.starterjwt.exception.BadRequestException;
 import com.openclassrooms.starterjwt.exception.NotFoundException;
+import com.openclassrooms.starterjwt.mapper.SessionMapper;
 import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
+import com.openclassrooms.starterjwt.repository.TeacherRepository;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class SessionService {
     private final SessionRepository sessionRepository;
 
+    private final TeacherRepository teacherRepository;
+
     private final UserRepository userRepository;
 
-    public SessionService(SessionRepository sessionRepository, UserRepository userRepository) {
+    private final SessionMapper sessionMapper;
+
+    public SessionService(SessionRepository sessionRepository, TeacherRepository teacherRepository,
+            UserRepository userRepository, SessionMapper sessionMapper) {
         this.sessionRepository = sessionRepository;
+        this.teacherRepository = teacherRepository;
         this.userRepository = userRepository;
+        this.sessionMapper = sessionMapper;
     }
 
-    public Session create(Session session) {
-        return this.sessionRepository.save(session);
+    public Session create(SessionDto sessionDto) {
+        return this.sessionRepository.save(this.toEntity(sessionDto));
     }
 
     public void delete(Long id) {
-        this.sessionRepository.deleteById(id);
+        this.sessionRepository.delete(this.getById(id));
     }
 
     public List<Session> findAll() {
@@ -35,11 +47,18 @@ public class SessionService {
     }
 
     public Session getById(Long id) {
-        return this.sessionRepository.findById(id).orElse(null);
+        return this.sessionRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public Session update(Long id, Session session) {
-        session.setId(id);
+    public Session update(Long id, SessionDto sessionDto) {
+        Session session = this.getById(id);
+        Session changes = this.toEntity(sessionDto);
+
+        session.setName(changes.getName());
+        session.setDate(changes.getDate());
+        session.setDescription(changes.getDescription());
+        session.setTeacher(changes.getTeacher());
+        session.setUsers(changes.getUsers());
         return this.sessionRepository.save(session);
     }
 
@@ -71,8 +90,19 @@ public class SessionService {
             throw new BadRequestException();
         }
 
-        session.setUsers(session.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
+        session.setUsers(
+                session.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
 
         this.sessionRepository.save(session);
+    }
+
+    private Session toEntity(SessionDto sessionDto) {
+        Session session = this.sessionMapper.toEntity(sessionDto);
+        session.setTeacher(
+                this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(BadRequestException::new));
+        session.setUsers(Optional.ofNullable(sessionDto.getUsers()).orElseGet(Collections::emptyList).stream()
+                .map(userId -> this.userRepository.findById(userId).orElse(null))
+                .collect(Collectors.toList()));
+        return session;
     }
 }

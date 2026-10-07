@@ -20,6 +20,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.version>1.18.32</lombok.version>
         <testcontainers.version>1.20.0</testcontainers.version>
+        <spotless.version>3.10.3</spotless.version>
     </properties>
 
     <dependencies>
@@ -138,6 +139,22 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <java>
+                        <eclipse>
+                            <file>${project.basedir}/eclipse-formatter.xml</file>
+                        </eclipse>
+                        <importOrder>
+                            <order>,javax|java,\#</order>
+                        </importOrder>
+                        <removeUnusedImports/>
+                    </java>
                 </configuration>
             </plugin>
             <plugin>
