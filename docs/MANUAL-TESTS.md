@@ -49,7 +49,9 @@ Sent with Postman, with the admin token. Each request answers 200.
 | `DELETE /api/user/{id}` on someone else's account | 401 | **403** |
 | `POST /api/session`, `/api/auth/login` or `/api/auth/register` with `{}`; malformed JSON | 401 | **400** |
 | `POST /api/session/{id}/participate/{userId}` with an unknown session or user; `DELETE` with an unknown session | 401 | **404** |
+| `PUT /api/session/999` | 401 | **404** |
 | `DELETE /api/session/{id}/participate/{userId}` for a user who is not enrolled | 401 | **400** |
+| `POST /api/session/{id}/participate/{userId}` for a user who is already enrolled | 401 | **400** |
 | `GET /api/unknown` (unknown URL) | 401 | **404** |
 | `DELETE /api/teacher/1` (unsupported method) | 401 | **405** |
 
@@ -57,8 +59,9 @@ Sent with Postman, with the admin token. Each request answers 200.
 
 | Case | Today | Target | Ref. |
 |---|:-:|:-:|---|
-| `POST /api/session` with an unknown `teacher_id` | 200 | **400** | API-03 |
-| `PUT /api/session/{id}` | 200 | 200 | API-04 |
+| `POST /api/session` or `PUT /api/session/{id}` with an unknown `teacher_id` | 200 | **400** | API-03 |
+| `POST /api/session` with the `id` of an existing session | 200 | 200 | API-04 |
+| `PUT /api/session/{id}` | 200 | 200 | API-05 |
 | `POST /api/session` for a teacher who already has a session | 401 | **200** | DATA-01 |
 | `PUT /api/session/{id}` with a non-admin token | 200 | **403** | SEC-01 |
 | `GET /api/user/{id}` of another user, with a non-admin token | 200 | **403** | SEC-01 |
@@ -66,7 +69,8 @@ Sent with Postman, with the admin token. Each request answers 200.
 
 **Notes:**
 - **API-03**: today the session is stored without teacher.
-- **API-04**: the status does not change. Today the response contains `"createdAt": null`; the target returns the stored date.
+- **API-04**: the status does not change. Today the existing session is overwritten; the target creates a new one.
+- **API-05**: the status does not change. Today the response contains `"createdAt": null`; the target returns the stored date.
 
 ## 5. Interface scenarios
 
