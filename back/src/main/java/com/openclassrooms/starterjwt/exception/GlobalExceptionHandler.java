@@ -1,5 +1,6 @@
 package com.openclassrooms.starterjwt.exception;
 
+import com.openclassrooms.starterjwt.payload.response.MessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,5 +31,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Void> handleUnauthorized() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @ExceptionHandler(EmailAlreadyTakenException.class)
+    public ResponseEntity<MessageResponse> handleEmailAlreadyTaken() {
+        return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already taken!"));
     }
 }
