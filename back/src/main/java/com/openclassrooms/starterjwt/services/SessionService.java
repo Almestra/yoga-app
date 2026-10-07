@@ -51,8 +51,14 @@ public class SessionService {
     }
 
     public Session update(Long id, SessionDto sessionDto) {
-        Session session = this.toEntity(sessionDto);
-        session.setId(id);
+        Session session = this.getById(id);
+        Session changes = this.toEntity(sessionDto);
+
+        session.setName(changes.getName());
+        session.setDate(changes.getDate());
+        session.setDescription(changes.getDescription());
+        session.setTeacher(changes.getTeacher());
+        session.setUsers(changes.getUsers());
         return this.sessionRepository.save(session);
     }
 
