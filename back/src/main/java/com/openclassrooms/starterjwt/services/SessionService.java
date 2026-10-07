@@ -27,7 +27,7 @@ public class SessionService {
     private final SessionMapper sessionMapper;
 
     public SessionService(SessionRepository sessionRepository, TeacherRepository teacherRepository,
-                          UserRepository userRepository, SessionMapper sessionMapper) {
+            UserRepository userRepository, SessionMapper sessionMapper) {
         this.sessionRepository = sessionRepository;
         this.teacherRepository = teacherRepository;
         this.userRepository = userRepository;
@@ -90,14 +90,16 @@ public class SessionService {
             throw new BadRequestException();
         }
 
-        session.setUsers(session.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
+        session.setUsers(
+                session.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
 
         this.sessionRepository.save(session);
     }
 
     private Session toEntity(SessionDto sessionDto) {
         Session session = this.sessionMapper.toEntity(sessionDto);
-        session.setTeacher(this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(BadRequestException::new));
+        session.setTeacher(
+                this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(BadRequestException::new));
         session.setUsers(Optional.ofNullable(sessionDto.getUsers()).orElseGet(Collections::emptyList).stream()
                 .map(userId -> this.userRepository.findById(userId).orElse(null))
                 .collect(Collectors.toList()));

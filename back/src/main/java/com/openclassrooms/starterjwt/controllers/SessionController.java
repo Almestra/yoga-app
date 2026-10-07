@@ -1,6 +1,5 @@
 package com.openclassrooms.starterjwt.controllers;
 
-
 import com.openclassrooms.starterjwt.dto.SessionDto;
 import com.openclassrooms.starterjwt.mapper.SessionMapper;
 import com.openclassrooms.starterjwt.models.Session;
@@ -26,9 +25,8 @@ public class SessionController {
     private final SessionMapper sessionMapper;
     private final SessionService sessionService;
 
-
     public SessionController(SessionService sessionService,
-                             SessionMapper sessionMapper) {
+            SessionMapper sessionMapper) {
         this.sessionMapper = sessionMapper;
         this.sessionService = sessionService;
     }

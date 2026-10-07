@@ -23,11 +23,11 @@ public interface SessionMapper extends EntityMapper<SessionDto, Session> {
     })
     Session toEntity(SessionDto sessionDto);
 
-
     @Mappings({
             @Mapping(source = "description", target = "description"),
             @Mapping(source = "session.teacher.id", target = "teacher_id"),
-            @Mapping(target = "users", expression = "java(Optional.ofNullable(session.getUsers()).orElseGet(Collections::emptyList).stream().map(u -> u.getId()).collect(Collectors.toList()))"),
+            @Mapping(target = "users",
+                    expression = "java(Optional.ofNullable(session.getUsers()).orElseGet(Collections::emptyList).stream().map(u -> u.getId()).collect(Collectors.toList()))"),
     })
     SessionDto toDto(Session session);
 }

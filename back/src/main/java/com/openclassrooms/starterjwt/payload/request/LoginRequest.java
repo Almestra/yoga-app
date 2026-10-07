@@ -1,6 +1,5 @@
 package com.openclassrooms.starterjwt.payload.request;
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
