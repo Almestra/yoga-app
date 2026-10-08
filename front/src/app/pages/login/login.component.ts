@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -24,7 +25,7 @@ export class LoginComponent {
   private destroyRef = inject(DestroyRef);
 
   public hide = true;
-  public onError = false;
+  public errorMessage = '';
 
   public form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -41,7 +42,10 @@ export class LoginComponent {
           this.sessionService.logIn(response);
           this.router.navigate(['/sessions']);
         },
-        error: () => (this.onError = true),
+        error: (error: HttpErrorResponse) => {
+          this.errorMessage =
+            error.status === 401 ? 'Incorrect email or password' : 'An error occurred';
+        },
       });
   }
 }

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -18,7 +19,7 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  public onError = false;
+  public errorMessage = '';
   private destroyRef = inject(DestroyRef);
 
   public form = this.fb.group({
@@ -35,7 +36,10 @@ export class RegisterComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => this.router.navigate(['/login']),
-        error: () => (this.onError = true),
+        error: (error: HttpErrorResponse) => {
+          this.errorMessage =
+            error.status === 400 ? 'This email is already used' : 'An error occurred';
+        },
       });
   }
 }

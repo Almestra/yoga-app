@@ -25,8 +25,8 @@
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
         Submit
       </button>
-      @if (onError) {
-        <span class="error ml2">An error occurred</span>
+      @if (errorMessage) {
+        <span class="error ml2">{{ errorMessage }}</span>
       }
     </form>
   </mat-card>
