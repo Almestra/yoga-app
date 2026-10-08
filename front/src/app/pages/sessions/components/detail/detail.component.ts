@@ -54,9 +54,12 @@ export class DetailComponent implements OnInit {
     this.sessionApiService
       .delete(this.sessionId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.matSnackBar.open('Session deleted !', 'Close', { duration: 3000 });
-        this.router.navigate(['sessions']);
+      .subscribe({
+        next: () => {
+          this.matSnackBar.open('Session deleted !', 'Close', { duration: 3000 });
+          this.router.navigate(['sessions']);
+        },
+        error: () => this.showError(),
       });
   }
 
@@ -64,14 +67,20 @@ export class DetailComponent implements OnInit {
     this.sessionApiService
       .participate(this.sessionId, this.userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.fetchSession());
+      .subscribe({
+        next: () => this.fetchSession(),
+        error: () => this.showError(),
+      });
   }
 
   public unParticipate(): void {
     this.sessionApiService
       .unParticipate(this.sessionId, this.userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.fetchSession());
+      .subscribe({
+        next: () => this.fetchSession(),
+        error: () => this.showError(),
+      });
   }
 
   private fetchSession(): void {
@@ -88,5 +97,9 @@ export class DetailComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((teacher: Teacher) => (this.teacher = teacher));
+  }
+
+  private showError(): void {
+    this.matSnackBar.open('An error occurred', 'Close', { duration: 3000 });
   }
 }

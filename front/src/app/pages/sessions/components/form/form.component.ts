@@ -57,12 +57,18 @@ export class FormComponent implements OnInit {
       this.sessionApiService
         .create(session)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.exitPage('Session created !'));
+        .subscribe({
+          next: () => this.exitPage('Session created !'),
+          error: () => this.showError(),
+        });
     } else {
       this.sessionApiService
         .update(this.id, session)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.exitPage('Session updated !'));
+        .subscribe({
+          next: () => this.exitPage('Session updated !'),
+          error: () => this.showError(),
+        });
     }
   }
 
@@ -84,5 +90,9 @@ export class FormComponent implements OnInit {
   private exitPage(message: string): void {
     this.matSnackBar.open(message, 'Close', { duration: 3000 });
     this.router.navigate(['sessions']);
+  }
+
+  private showError(): void {
+    this.matSnackBar.open('An error occurred', 'Close', { duration: 3000 });
   }
 }

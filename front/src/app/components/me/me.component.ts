@@ -33,10 +33,17 @@ export class MeComponent {
     this.userService
       .delete(this.userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.matSnackBar.open('Your account has been deleted !', 'Close', { duration: 3000 });
-        this.sessionService.logOut();
-        this.router.navigate(['/']);
+      .subscribe({
+        next: () => {
+          this.matSnackBar.open('Your account has been deleted !', 'Close', { duration: 3000 });
+          this.sessionService.logOut();
+          this.router.navigate(['/']);
+        },
+        error: () => this.showError(),
       });
+  }
+
+  private showError(): void {
+    this.matSnackBar.open('An error occurred', 'Close', { duration: 3000 });
   }
 }
