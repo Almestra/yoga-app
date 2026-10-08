@@ -3,7 +3,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Session } from '../../../../core/models/session.interface';
 import { SessionService } from '../../../../core/service/session.service';
@@ -13,7 +13,7 @@ import { MaterialModule } from '../../../../shared/material.module';
 
 @Component({
   selector: 'app-form',
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, RouterModule],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
