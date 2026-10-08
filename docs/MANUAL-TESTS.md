@@ -38,15 +38,18 @@ Sent with Postman, with the admin token. Each request answers 200.
 
 ## 3. API: error cases
 
+Like the nominal sequence, the cases of sections 3 and 4 are sent with the admin token, unless stated otherwise.
+
 | Case | Today | Target |
 |---|:-:|:-:|
 | `GET` or `DELETE` on `/api/session/abc` and `/api/user/abc`; `GET /api/teacher/abc` | 400 | 400 |
 | `PUT /api/session/abc`; `POST` or `DELETE /api/session/abc/participate/1` | 400 | 400 |
-| `GET` or `DELETE` on `/api/session/999` and `/api/user/999`; `GET /api/teacher/999` | 404 | 404 |
+| `GET` or `DELETE` on `/api/session/999`; `GET` on `/api/user/999` and `/api/teacher/999` | 404 | 404 |
 | Any request without token, or with an expired token | 401 | 401 |
 | `POST /api/auth/login` with a wrong password | 401 | 401 |
 | `POST /api/auth/register` with an email already used | 400 | 400 |
 | `DELETE /api/user/{id}` on someone else's account | 401 | **403** |
+| `DELETE /api/user/999` | 404 | **403** |
 | `POST /api/session`, `/api/auth/login` or `/api/auth/register` with `{}`; malformed JSON | 401 | **400** |
 | `POST /api/session/{id}/participate/{userId}` with an unknown session or user; `DELETE` with an unknown session | 401 | **404** |
 | `PUT /api/session/999` | 401 | **404** |
