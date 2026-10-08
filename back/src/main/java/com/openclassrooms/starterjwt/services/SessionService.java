@@ -12,9 +12,7 @@ import com.openclassrooms.starterjwt.repository.UserRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +57,6 @@ public class SessionService {
         session.setDate(changes.getDate());
         session.setDescription(changes.getDescription());
         session.setTeacher(changes.getTeacher());
-        session.setUsers(changes.getUsers());
         return this.sessionRepository.save(session);
     }
 
@@ -103,9 +100,6 @@ public class SessionService {
         Session session = this.sessionMapper.toEntity(sessionDto);
         session.setTeacher(
                 this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(BadRequestException::new));
-        session.setUsers(Optional.ofNullable(sessionDto.getUsers()).orElseGet(Collections::emptyList).stream()
-                .map(userId -> this.userRepository.findById(userId).orElse(null))
-                .collect(Collectors.toList()));
         return session;
     }
 }
