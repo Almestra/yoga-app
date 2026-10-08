@@ -29,6 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .lastName(user.getLastName())
                 .firstName(user.getFirstName())
                 .password(user.getPassword())
+                .admin(user.isAdmin())
                 .build();
     }
 
