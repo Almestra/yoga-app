@@ -40,18 +40,12 @@ public class AuthService {
         String jwt = this.jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        boolean isAdmin = false;
-        User user = this.userRepository.findByEmail(userDetails.getUsername()).orElse(null);
-        if (user != null) {
-            isAdmin = user.isAdmin();
-        }
-
         return new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getFirstName(),
                 userDetails.getLastName(),
-                isAdmin);
+                userDetails.isAdmin());
     }
 
     public void register(SignupRequest signUpRequest) {

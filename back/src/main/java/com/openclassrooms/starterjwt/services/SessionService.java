@@ -9,6 +9,7 @@ import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
 import com.openclassrooms.starterjwt.repository.TeacherRepository;
 import com.openclassrooms.starterjwt.repository.UserRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -62,6 +63,7 @@ public class SessionService {
         return this.sessionRepository.save(session);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #userId == principal.id")
     public void participate(Long id, Long userId) {
         Session session = this.sessionRepository.findById(id).orElse(null);
         User user = this.userRepository.findById(userId).orElse(null);
@@ -79,6 +81,7 @@ public class SessionService {
         this.sessionRepository.save(session);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #userId == principal.id")
     public void noLongerParticipate(Long id, Long userId) {
         Session session = this.sessionRepository.findById(id).orElse(null);
         if (session == null) {

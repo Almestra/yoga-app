@@ -1,7 +1,6 @@
 package com.openclassrooms.starterjwt.exception;
 
 import com.openclassrooms.starterjwt.payload.response.MessageResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,11 +25,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Void> handleTypeMismatch() {
         return ResponseEntity.badRequest().build();
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<Void> handleUnauthorized() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @ExceptionHandler(EmailAlreadyTakenException.class)
