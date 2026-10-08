@@ -6,10 +6,11 @@ import { Router } from '@angular/router';
 import { RegisterRequest } from '../../core/models/registerRequest.interface';
 import { AuthService } from '../../core/service/auth.service';
 import { MaterialModule } from '../../shared/material.module';
+import { ValidationMessagePipe } from '../../shared/validation-message.pipe';
 
 @Component({
   selector: 'app-register',
-  imports: [MaterialModule],
+  imports: [MaterialModule, ValidationMessagePipe],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })

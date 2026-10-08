@@ -8,10 +8,11 @@ import { SessionService } from 'src/app/core/service/session.service';
 import { LoginRequest } from '../../core/models/loginRequest.interface';
 import { AuthService } from '../../core/service/auth.service';
 import { MaterialModule } from '../../shared/material.module';
+import { ValidationMessagePipe } from '../../shared/validation-message.pipe';
 
 @Component({
   selector: 'app-login',
-  imports: [MaterialModule],
+  imports: [MaterialModule, ValidationMessagePipe],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })

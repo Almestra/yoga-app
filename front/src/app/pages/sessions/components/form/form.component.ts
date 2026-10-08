@@ -10,10 +10,11 @@ import { SessionService } from '../../../../core/service/session.service';
 import { SessionApiService } from '../../../../core/service/session-api.service';
 import { TeacherService } from '../../../../core/service/teacher.service';
 import { MaterialModule } from '../../../../shared/material.module';
+import { ValidationMessagePipe } from '../../../../shared/validation-message.pipe';
 
 @Component({
   selector: 'app-form',
-  imports: [CommonModule, MaterialModule, RouterModule],
+  imports: [CommonModule, MaterialModule, RouterModule, ValidationMessagePipe],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
