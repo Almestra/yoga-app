@@ -7,22 +7,26 @@
       <mat-card-content fxLayout="column">
         <mat-form-field fxFlex>
           <input matInput placeholder="First name" formControlName="firstName" />
+          <mat-error>{{ form.controls.firstName.errors | validationMessage }}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Last name" formControlName="lastName" />
+          <mat-error>{{ form.controls.lastName.errors | validationMessage }}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Email" formControlName="email" />
+          <mat-error>{{ form.controls.email.errors | validationMessage }}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Password" formControlName="password" />
+          <input matInput type="password" placeholder="Password" formControlName="password" />
+          <mat-error>{{ form.controls.password.errors | validationMessage }}</mat-error>
         </mat-form-field>
       </mat-card-content>
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
         Submit
       </button>
-      @if (onError) {
-        <span class="error ml2">An error occurred</span>
+      @if (errorMessage) {
+        <span class="error ml2">{{ errorMessage }}</span>
       }
     </form>
   </mat-card>

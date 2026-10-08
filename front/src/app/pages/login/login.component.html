@@ -7,6 +7,7 @@
       <mat-card-content fxLayout="column">
         <mat-form-field fxFlex>
           <input matInput placeholder="Email" formControlName="email" />
+          <mat-error>{{ form.controls.email.errors | validationMessage }}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input
@@ -18,19 +19,21 @@
           <button
             mat-icon-button
             matSuffix
+            type="button"
             (click)="hide = !hide"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide"
           >
             <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
+          <mat-error>{{ form.controls.password.errors | validationMessage }}</mat-error>
         </mat-form-field>
       </mat-card-content>
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
         Submit
       </button>
-      @if (onError) {
-        <p class="error">An error occurred</p>
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
       }
     </form>
   </mat-card>

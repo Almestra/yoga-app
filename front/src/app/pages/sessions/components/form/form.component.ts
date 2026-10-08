@@ -3,17 +3,18 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Session } from '../../../../core/models/session.interface';
 import { SessionService } from '../../../../core/service/session.service';
 import { SessionApiService } from '../../../../core/service/session-api.service';
 import { TeacherService } from '../../../../core/service/teacher.service';
 import { MaterialModule } from '../../../../shared/material.module';
+import { ValidationMessagePipe } from '../../../../shared/validation-message.pipe';
 
 @Component({
   selector: 'app-form',
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, RouterModule, ValidationMessagePipe],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
@@ -57,18 +58,24 @@ export class FormComponent implements OnInit {
       this.sessionApiService
         .create(session)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.exitPage('Session created !'));
+        .subscribe({
+          next: () => this.exitPage('Session created !'),
+          error: () => this.showError(),
+        });
     } else {
       this.sessionApiService
         .update(this.id, session)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.exitPage('Session updated !'));
+        .subscribe({
+          next: () => this.exitPage('Session updated !'),
+          error: () => this.showError(),
+        });
     }
   }
 
   private initForm(session?: Session): void {
     this.sessionForm = this.fb.group({
-      name: [session ? session.name : '', [Validators.required]],
+      name: [session ? session.name : '', [Validators.required, Validators.maxLength(50)]],
       date: [
         session ? new Date(session.date).toISOString().split('T')[0] : '',
         [Validators.required],
@@ -76,7 +83,7 @@ export class FormComponent implements OnInit {
       teacher_id: [session ? session.teacher_id : '', [Validators.required]],
       description: [
         session ? session.description : '',
-        [Validators.required, Validators.max(2000)],
+        [Validators.required, Validators.maxLength(2500)],
       ],
     });
   }
@@ -84,5 +91,9 @@ export class FormComponent implements OnInit {
   private exitPage(message: string): void {
     this.matSnackBar.open(message, 'Close', { duration: 3000 });
     this.router.navigate(['sessions']);
+  }
+
+  private showError(): void {
+    this.matSnackBar.open('An error occurred', 'Close', { duration: 3000 });
   }
 }
