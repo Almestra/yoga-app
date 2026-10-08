@@ -21,10 +21,10 @@ export class RegisterComponent {
   private destroyRef = inject(DestroyRef);
 
   public form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    firstName: ['', [Validators.required, Validators.min(3), Validators.max(20)]],
-    lastName: ['', [Validators.required, Validators.min(3), Validators.max(20)]],
-    password: ['', [Validators.required, Validators.min(3), Validators.max(40)]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+    firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(40)]],
   });
 
   public submit(): void {

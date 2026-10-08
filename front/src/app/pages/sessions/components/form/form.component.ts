@@ -74,7 +74,7 @@ export class FormComponent implements OnInit {
 
   private initForm(session?: Session): void {
     this.sessionForm = this.fb.group({
-      name: [session ? session.name : '', [Validators.required]],
+      name: [session ? session.name : '', [Validators.required, Validators.maxLength(50)]],
       date: [
         session ? new Date(session.date).toISOString().split('T')[0] : '',
         [Validators.required],
@@ -82,7 +82,7 @@ export class FormComponent implements OnInit {
       teacher_id: [session ? session.teacher_id : '', [Validators.required]],
       description: [
         session ? session.description : '',
-        [Validators.required, Validators.max(2000)],
+        [Validators.required, Validators.maxLength(2500)],
       ],
     });
   }
