@@ -24,6 +24,17 @@ describe('TeacherService', () => {
     httpCtrl.verify();
   });
 
+  it('should ask the server for the teachers and return them', () => {
+    let answer: Teacher[] | undefined;
+
+    service.all().subscribe((teachers) => (answer = teachers));
+    const req = httpCtrl.expectOne('api/teacher');
+    req.flush(TEST_TEACHERS);
+
+    expect(req.request.method).toBe('GET');
+    expect(answer).toEqual(TEST_TEACHERS);
+  });
+
   it('should ask the server for one teacher and return it', () => {
     let answer: Teacher | undefined;
 

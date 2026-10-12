@@ -69,4 +69,28 @@ describe('SessionApiService', () => {
 
     expect(req.request.method).toBe('DELETE');
   });
+
+  it('should send the session to create and return the one the server answers', () => {
+    let answer: Session | undefined;
+
+    service.create(TEST_SESSIONS[0]).subscribe((session) => (answer = session));
+    const req = httpCtrl.expectOne('api/session');
+    req.flush(TEST_SESSIONS[1]);
+
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(TEST_SESSIONS[0]);
+    expect(answer).toEqual(TEST_SESSIONS[1]);
+  });
+
+  it('should send the session to update and return the one the server answers', () => {
+    let answer: Session | undefined;
+
+    service.update('2', TEST_SESSIONS[0]).subscribe((session) => (answer = session));
+    const req = httpCtrl.expectOne('api/session/2');
+    req.flush(TEST_SESSIONS[1]);
+
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual(TEST_SESSIONS[0]);
+    expect(answer).toEqual(TEST_SESSIONS[1]);
+  });
 });
