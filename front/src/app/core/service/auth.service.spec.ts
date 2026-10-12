@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { expect } from '@jest/globals';
 
 import { TEST_USER_LOGIN } from '../../../test-data/test-logins';
+import { TEST_REGISTRATION } from '../../../test-data/test-registrations';
 import { LoginRequest } from '../models/loginRequest.interface';
 import { SessionInformation } from '../models/sessionInformation.interface';
 import { AuthService } from './auth.service';
@@ -36,5 +37,14 @@ describe('AuthService', () => {
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(credentials);
     expect(answer).toEqual(TEST_USER_LOGIN);
+  });
+
+  it('should send the registration to the server', () => {
+    service.register(TEST_REGISTRATION).subscribe();
+    const req = httpCtrl.expectOne('/api/auth/register');
+    req.flush({ message: 'User registered successfully!' });
+
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(TEST_REGISTRATION);
   });
 });
