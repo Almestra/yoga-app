@@ -22,3 +22,10 @@ export const TEST_SESSIONS: Session[] = [
     updatedAt: new Date('2026-10-04T12:00:00Z'),
   },
 ];
+
+export const TEST_SESSION_ENTRY = {
+  name: 'Sunday relax',
+  date: '2026-12-06',
+  teacher: 'Margot Delahaye',
+  description: 'A quiet hour to end the week',
+};
