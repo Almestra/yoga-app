@@ -34,4 +34,39 @@ describe('SessionApiService', () => {
     expect(req.request.method).toBe('GET');
     expect(answer).toEqual(TEST_SESSIONS);
   });
+
+  it('should ask the server for one session and return it', () => {
+    let answer: Session | undefined;
+
+    service.detail('2').subscribe((session) => (answer = session));
+    const req = httpCtrl.expectOne('api/session/2');
+    req.flush(TEST_SESSIONS[1]);
+
+    expect(req.request.method).toBe('GET');
+    expect(answer).toEqual(TEST_SESSIONS[1]);
+  });
+
+  it('should ask the server to delete a session', () => {
+    service.delete('2').subscribe();
+    const req = httpCtrl.expectOne('api/session/2');
+    req.flush(null);
+
+    expect(req.request.method).toBe('DELETE');
+  });
+
+  it('should ask the server to enrol a user in a session', () => {
+    service.participate('2', '3').subscribe();
+    const req = httpCtrl.expectOne('api/session/2/participate/3');
+    req.flush(null);
+
+    expect(req.request.method).toBe('POST');
+  });
+
+  it('should ask the server to remove a user from a session', () => {
+    service.unParticipate('2', '3').subscribe();
+    const req = httpCtrl.expectOne('api/session/2/participate/3');
+    req.flush(null);
+
+    expect(req.request.method).toBe('DELETE');
+  });
 });
