@@ -1,18 +1,10 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { expect } from '@jest/globals';
 import { SessionService } from 'src/app/core/service/session.service';
 
-import { SessionApiService } from '../../../../core/service/session-api.service';
 import { FormComponent } from './form.component';
 
 describe('FormComponent', () => {
@@ -27,20 +19,13 @@ describe('FormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        HttpClientModule,
-        MatCardModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        MatSelectModule,
-        BrowserAnimationsModule,
+      imports: [FormComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+        { provide: SessionService, useValue: mockSessionService },
       ],
-      providers: [{ provide: SessionService, useValue: mockSessionService }, SessionApiService],
-      declarations: [FormComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FormComponent);
