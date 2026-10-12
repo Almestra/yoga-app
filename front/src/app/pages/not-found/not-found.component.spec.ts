@@ -4,7 +4,6 @@ import { expect } from '@jest/globals';
 import { NotFoundComponent } from './not-found.component';
 
 describe('NotFoundComponent', () => {
-  let component: NotFoundComponent;
   let fixture: ComponentFixture<NotFoundComponent>;
 
   beforeEach(async () => {
@@ -13,11 +12,10 @@ describe('NotFoundComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotFoundComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should display "Page not found !"', () => {
+    expect(fixture.nativeElement.textContent).toBe('Page not found !');
   });
 });
