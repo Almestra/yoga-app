@@ -5,6 +5,7 @@
     "types": [
       "jest"
     ],
+    "target": "es2016",
     "module": "commonjs",
     "emitDecoratorMetadata": true,
     "allowJs": true
