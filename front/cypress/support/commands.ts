@@ -18,3 +18,7 @@ Cypress.Commands.add('login', (role, sessions) => {
 
   cy.contains('Sessions available');
 });
+
+Cypress.Commands.add('sessionCard', (name) =>
+  cy.contains('mat-card-title', name).closest('mat-card'),
+);

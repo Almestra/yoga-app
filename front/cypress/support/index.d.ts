@@ -6,5 +6,8 @@ declare namespace Cypress {
      * fixture, unless others are given.
      */
     login(role: 'admin' | 'user', sessions?: object[]): Chainable<void>;
+
+    /** Finds, on the session list, the card of the session with that name. */
+    sessionCard(name: string): Chainable<JQuery<HTMLElement>>;
   }
 }

@@ -3,10 +3,6 @@ import teachers from '../fixtures/teachers.json';
 
 const [morning, evening] = sessions;
 
-function sessionCard(name: string): Cypress.Chainable<JQuery<HTMLElement>> {
-  return cy.contains('mat-card-title', name).closest('mat-card');
-}
-
 function buttons(label: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`button:contains("${label}")`);
 }
@@ -16,10 +12,10 @@ describe('Session list', () => {
     it('should show the name, the date and the description of each session', () => {
       cy.login('user');
 
-      sessionCard(morning.name)
+      cy.sessionCard(morning.name)
         .should('contain', 'Session on October 15, 2026')
         .and('contain', morning.description);
-      sessionCard(evening.name)
+      cy.sessionCard(evening.name)
         .should('contain', 'Session on November 2, 2026')
         .and('contain', evening.description);
       buttons('Detail').should('have.length', 2);
@@ -57,7 +53,7 @@ describe('Session list', () => {
       cy.intercept('GET', `/api/teacher/${evening.teacher_id}`, teachers[1]);
       cy.login('user');
 
-      sessionCard(evening.name).contains('button', 'Detail').click();
+      cy.sessionCard(evening.name).contains('button', 'Detail').click();
 
       cy.location('pathname').should('eq', `/sessions/detail/${evening.id}`);
       cy.contains('h1', 'Evening Stretch');
@@ -78,7 +74,7 @@ describe('Session list', () => {
       cy.intercept('GET', '/api/teacher', teachers);
       cy.login('admin');
 
-      sessionCard(evening.name).contains('button', 'Edit').click();
+      cy.sessionCard(evening.name).contains('button', 'Edit').click();
 
       cy.location('pathname').should('eq', `/sessions/update/${evening.id}`);
       cy.contains('h1', 'Update session');
