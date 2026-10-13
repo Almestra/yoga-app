@@ -45,4 +45,5 @@ Thumbs.db
 
 # End-to-end tests
 /.nyc_output
+/cypress/downloads
 /cypress/screenshots
