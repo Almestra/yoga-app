@@ -41,4 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
-**/.DS_Store 
+**/.DS_Store
+
+# End-to-end tests
+/.nyc_output
+/cypress/downloads
+/cypress/screenshots

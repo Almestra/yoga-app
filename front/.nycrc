@@ -1,0 +1,11 @@
+{
+  "include": ["src/app/**/*.ts"],
+  "excludeAfterRemap": true,
+  "report-dir": "coverage/e2e",
+  "reporter": ["html"],
+  "check-coverage": true,
+  "statements": 80,
+  "branches": 80,
+  "functions": 80,
+  "lines": 80
+}
