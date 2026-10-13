@@ -11,6 +11,7 @@
     "format:check": "prettier --check \"src/**/*.{ts,html,scss}\"",
     "e2e": "ng e2e",
     "e2e:ci": "ng run yoga:e2e-ci",
+    "pree2e:ci": "node -e \"require('fs').rmSync('.nyc_output', { recursive: true, force: true })\"",
     "e2e:coverage": "npx nyc report --reporter=html --reporter=text",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
