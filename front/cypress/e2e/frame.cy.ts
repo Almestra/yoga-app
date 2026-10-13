@@ -1,3 +1,9 @@
+import {
+  shouldBeOnTheLoginPage,
+  shouldBeOnTheSessionList,
+  toolbarShouldOffer,
+} from '../support/checks';
+
 const RESERVED_PAGES = [
   '/sessions',
   '/sessions/detail/1',
@@ -5,20 +11,6 @@ const RESERVED_PAGES = [
   '/sessions/update/1',
   '/me',
 ];
-
-function toolbarShouldOffer(...labels: string[]): void {
-  cy.get('mat-toolbar').should('have.text', ['Yoga app', ...labels].join(''));
-}
-
-function shouldBeOnTheLoginPage(): void {
-  cy.location('pathname').should('eq', '/login');
-  cy.contains('mat-card-title', 'Login');
-}
-
-function shouldBeOnTheSessionList(): void {
-  cy.location('pathname').should('eq', '/sessions');
-  cy.contains('Sessions available');
-}
 
 describe('Application frame', () => {
   describe('When nobody is logged in', () => {
