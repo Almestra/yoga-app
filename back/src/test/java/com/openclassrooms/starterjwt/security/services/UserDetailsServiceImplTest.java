@@ -27,7 +27,7 @@ class UserDetailsServiceImplTest {
 
     @Test
     void aKnownAccountKeepsItsIdentityRoleAndPassword() {
-        User user = new User("admin@test.com", "Doe", "John", "encoded-password", true).setId(7L);
+        User user = new User("admin@test.com", "Doe", "John", "encoded-password").setAdmin(true).setId(7L);
         when(this.userRepository.findByEmail("admin@test.com")).thenReturn(Optional.of(user));
 
         UserDetailsImpl details = (UserDetailsImpl) this.userDetailsService.loadUserByUsername("admin@test.com");

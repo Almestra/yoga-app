@@ -1,7 +1,6 @@
-oc:
-  app:
-    jwtExpirationMs: 86400000
-    jwtSecret: ${TOKEN_SECRET}
+jwt:
+  secret: ${TOKEN_SECRET}
+  expiration: 24h
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -63,7 +63,8 @@ public abstract class ApiIntegrationSupport {
     }
 
     protected User createUser(String email, boolean admin) {
-        return this.userRepository.save(new User(email, "Doe", "John", this.passwordEncoder.encode(PASSWORD), admin));
+        return this.userRepository
+                .save(new User(email, "Doe", "John", this.passwordEncoder.encode(PASSWORD)).setAdmin(admin));
     }
 
     protected Teacher createTeacher(String firstName, String lastName) {
