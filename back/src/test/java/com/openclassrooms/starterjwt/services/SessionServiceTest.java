@@ -99,6 +99,74 @@ class SessionServiceTest {
         assertThatThrownBy(() -> this.sessionService.delete(99L)).isInstanceOf(NotFoundException.class);
     }
 
+    @Test
+    void aUserEnrolsInASession() {
+        User user = new User().setId(5L);
+        Session yoga = sessionWith();
+        when(this.sessionRepository.findById(1L)).thenReturn(Optional.of(yoga));
+        when(this.userRepository.findById(5L)).thenReturn(Optional.of(user));
+
+        this.sessionService.participate(1L, 5L);
+
+        assertThat(yoga.getUsers()).containsExactly(user);
+    }
+
+    @Test
+    void enrollingTwiceIsABadRequest() {
+        User user = new User().setId(5L);
+        when(this.sessionRepository.findById(1L)).thenReturn(Optional.of(sessionWith(user)));
+        when(this.userRepository.findById(5L)).thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> this.sessionService.participate(1L, 5L)).isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void enrollingInAnUnknownSessionIsNotFound() {
+        when(this.sessionRepository.findById(99L)).thenReturn(Optional.empty());
+        when(this.userRepository.findById(5L)).thenReturn(Optional.of(new User().setId(5L)));
+
+        assertThatThrownBy(() -> this.sessionService.participate(99L, 5L)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void enrollingAnUnknownUserIsNotFound() {
+        when(this.sessionRepository.findById(1L)).thenReturn(Optional.of(sessionWith()));
+        when(this.userRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> this.sessionService.participate(1L, 99L)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void aUserWithdrawsFromASessionAndTheOthersStay() {
+        User other = new User().setId(8L);
+        Session yoga = sessionWith(new User().setId(5L), other);
+        when(this.sessionRepository.findById(1L)).thenReturn(Optional.of(yoga));
+
+        this.sessionService.noLongerParticipate(1L, 5L);
+
+        assertThat(yoga.getUsers()).containsExactly(other);
+    }
+
+    @Test
+    void withdrawingWithoutBeingEnrolledIsABadRequest() {
+        when(this.sessionRepository.findById(1L)).thenReturn(Optional.of(sessionWith(new User().setId(8L))));
+
+        assertThatThrownBy(() -> this.sessionService.noLongerParticipate(1L, 5L))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void withdrawingFromAnUnknownSessionIsNotFound() {
+        when(this.sessionRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> this.sessionService.noLongerParticipate(99L, 5L))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    private static Session sessionWith(User... participants) {
+        return new Session().setId(1L).setName("Yoga").setUsers(new ArrayList<>(List.of(participants)));
+    }
+
     private static SessionDto sessionDto(Long teacherId) {
         return new SessionDto(null, "Yoga", new Date(), teacherId, "Breathe", null, null, null);
     }
