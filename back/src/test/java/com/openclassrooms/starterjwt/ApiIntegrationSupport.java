@@ -1,6 +1,7 @@
 package com.openclassrooms.starterjwt;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
 import com.openclassrooms.starterjwt.repository.TeacherRepository;
@@ -28,6 +29,9 @@ import java.util.Map;
 public abstract class ApiIntegrationSupport {
     protected static final String PASSWORD = "test!1234";
 
+    /** No row can have this identifier. */
+    protected static final long UNKNOWN_ID = Long.MAX_VALUE;
+
     @Autowired
     protected TestRestTemplate rest;
 
@@ -52,6 +56,10 @@ public abstract class ApiIntegrationSupport {
 
     protected User createUser(String email, boolean admin) {
         return this.userRepository.save(new User(email, "Doe", "John", this.passwordEncoder.encode(PASSWORD), admin));
+    }
+
+    protected Teacher createTeacher(String firstName, String lastName) {
+        return this.teacherRepository.save(new Teacher().setFirstName(firstName).setLastName(lastName));
     }
 
     protected String logIn(String email) {
