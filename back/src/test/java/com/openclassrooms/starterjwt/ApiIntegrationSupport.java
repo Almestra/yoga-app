@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -40,7 +41,7 @@ public abstract class ApiIntegrationSupport {
     protected SessionRepository sessionRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    protected PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void emptyTheDatabase() {
@@ -64,16 +65,26 @@ public abstract class ApiIntegrationSupport {
     }
 
     protected ResponseEntity<JsonNode> send(HttpMethod method, String url, String token, Object body) {
-        HttpHeaders headers = new HttpHeaders();
-        if (token != null) {
-            headers.setBearerAuth(token);
-        }
-        return this.rest.exchange(url, method, new HttpEntity<>(body, headers), JsonNode.class);
+        return this.rest.exchange(url, method, new HttpEntity<>(body, this.headers(token)), JsonNode.class);
+    }
+
+    protected ResponseEntity<JsonNode> sendJson(HttpMethod method, String url, String token, String json) {
+        HttpHeaders headers = this.headers(token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return this.rest.exchange(url, method, new HttpEntity<>(json, headers), JsonNode.class);
     }
 
     protected ResponseEntity<JsonNode> sendWithAuthorization(HttpMethod method, String url, String authorization) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, authorization);
         return this.rest.exchange(url, method, new HttpEntity<>(headers), JsonNode.class);
+    }
+
+    private HttpHeaders headers(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        if (token != null) {
+            headers.setBearerAuth(token);
+        }
+        return headers;
     }
 }
