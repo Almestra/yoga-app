@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> save(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         this.userService.delete(id);
         return ResponseEntity.ok().build();
     }
