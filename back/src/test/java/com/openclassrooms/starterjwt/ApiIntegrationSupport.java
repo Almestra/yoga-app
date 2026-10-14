@@ -1,6 +1,7 @@
 package com.openclassrooms.starterjwt;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
@@ -18,6 +19,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +36,9 @@ public abstract class ApiIntegrationSupport {
 
     /** No row can have this identifier. */
     protected static final long UNKNOWN_ID = Long.MAX_VALUE;
+
+    /** The date given to every session created by a test. */
+    protected static final Date SESSION_DATE = Date.from(Instant.parse("2026-11-03T09:00:00Z"));
 
     @Autowired
     protected TestRestTemplate rest;
@@ -60,6 +68,12 @@ public abstract class ApiIntegrationSupport {
 
     protected Teacher createTeacher(String firstName, String lastName) {
         return this.teacherRepository.save(new Teacher().setFirstName(firstName).setLastName(lastName));
+    }
+
+    protected Session createSession(String name, Teacher teacher, User... participants) {
+        return this.sessionRepository.save(new Session().setName(name).setDate(SESSION_DATE)
+                .setDescription("Description of " + name).setTeacher(teacher)
+                .setUsers(new ArrayList<>(List.of(participants))));
     }
 
     protected String logIn(String email) {
