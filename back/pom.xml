@@ -175,6 +175,7 @@
                     <excludes>
                         <exclude>**/dto/**</exclude>
                         <exclude>**/payload/**</exclude>
+                        <exclude>**/*MapperImpl*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
