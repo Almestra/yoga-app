@@ -5,13 +5,11 @@ import com.openclassrooms.starterjwt.models.Session;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 @Mapper(componentModel = "spring", imports = {Collectors.class, Collections.class, Optional.class})
 public interface SessionMapper extends EntityMapper<SessionDto, Session> {
 
