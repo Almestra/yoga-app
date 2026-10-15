@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yoga-app</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.starterjwt.services</a> &gt; <span class="el_source">AuthService.java</span></div><h1>AuthService.java</h1><pre class="source lang-java linenums">package com.openclassrooms.starterjwt.services;
+
+import com.openclassrooms.starterjwt.exception.EmailAlreadyTakenException;
+import com.openclassrooms.starterjwt.models.User;
+import com.openclassrooms.starterjwt.payload.request.LoginRequest;
+import com.openclassrooms.starterjwt.payload.request.SignupRequest;
+import com.openclassrooms.starterjwt.payload.response.JwtResponse;
+import com.openclassrooms.starterjwt.repository.UserRepository;
+import com.openclassrooms.starterjwt.security.jwt.JwtUtils;
+import com.openclassrooms.starterjwt.security.services.UserDetailsImpl;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthService {
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+
+    public AuthService(AuthenticationManager authenticationManager,
+            PasswordEncoder passwordEncoder,
+            JwtUtils jwtUtils,
+<span class="fc" id="L28">            UserRepository userRepository) {</span>
+<span class="fc" id="L29">        this.authenticationManager = authenticationManager;</span>
+<span class="fc" id="L30">        this.jwtUtils = jwtUtils;</span>
+<span class="fc" id="L31">        this.passwordEncoder = passwordEncoder;</span>
+<span class="fc" id="L32">        this.userRepository = userRepository;</span>
+<span class="fc" id="L33">    }</span>
+
+    public JwtResponse login(LoginRequest loginRequest) {
+<span class="fc" id="L36">        Authentication authentication = this.authenticationManager.authenticate(</span>
+<span class="fc" id="L37">                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));</span>
+
+<span class="fc" id="L39">        SecurityContextHolder.getContext().setAuthentication(authentication);</span>
+<span class="fc" id="L40">        String jwt = this.jwtUtils.generateJwtToken(authentication);</span>
+<span class="fc" id="L41">        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();</span>
+
+<span class="fc" id="L43">        return new JwtResponse(jwt,</span>
+<span class="fc" id="L44">                userDetails.getId(),</span>
+<span class="fc" id="L45">                userDetails.getUsername(),</span>
+<span class="fc" id="L46">                userDetails.getFirstName(),</span>
+<span class="fc" id="L47">                userDetails.getLastName(),</span>
+<span class="fc" id="L48">                userDetails.isAdmin());</span>
+    }
+
+    public void register(SignupRequest signUpRequest) {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (this.userRepository.existsByEmail(signUpRequest.getEmail())) {</span>
+<span class="fc" id="L53">            throw new EmailAlreadyTakenException();</span>
+        }
+
+<span class="fc" id="L56">        User user = new User(signUpRequest.getEmail(),</span>
+<span class="fc" id="L57">                signUpRequest.getLastName(),</span>
+<span class="fc" id="L58">                signUpRequest.getFirstName(),</span>
+<span class="fc" id="L59">                this.passwordEncoder.encode(signUpRequest.getPassword()));</span>
+
+<span class="fc" id="L61">        this.userRepository.save(user);</span>
+<span class="fc" id="L62">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

@@ -10,9 +10,10 @@ This repository takes over the application as it was delivered for a training pr
 2. [Installation](#installation)
 3. [Running the application](#running-the-application)
 4. [Tests](#tests)
-5. [Known limits](#known-limits)
-6. [Project history](#project-history)
-7. [Documentation](#documentation)
+5. [Coverage](#coverage)
+6. [Known limits](#known-limits)
+7. [Project history](#project-history)
+8. [Documentation](#documentation)
 
 ## Prerequisites
 
@@ -146,6 +147,30 @@ From the `back` folder, with Docker running and `.env` created (the tests only n
 
 - Front end: `npm run lint` (ESLint) and `npm run format:check` (Prettier).
 - Back end: `./mvnw spotless:check`, and `./mvnw spotless:apply` to reformat.
+
+## Coverage
+
+The reports of the last run are copied into `docs/coverage/`. GitHub does not display HTML pages: open their `index.html` after cloning.
+
+| Suite | Statements or instructions | Branches | Functions or methods | Lines | Report |
+|---|---|---|---|---|---|
+| Front end (Jest) | 100 % | 88.63 % | 100 % | 100 % | [front](docs/coverage/front/index.html) |
+| End to end (Cypress) | 100 % | 94.87 % | 100 % | 100 % | [e2e](docs/coverage/e2e/index.html) |
+| Back end (JaCoCo) | 95.2 % | 80.0 % | 97.5 % | 94.2 % | [back](docs/coverage/back/index.html) |
+
+The back end also checks complexity (94.8 %) and classes (100 %). In the end-to-end report, the four missing branches are fallbacks that the interface cannot reach.
+
+![Front-end coverage](docs/coverage/front.png)
+
+*Front end (Jest)*
+
+![End-to-end coverage](docs/coverage/e2e.png)
+
+*End to end (Cypress)*
+
+![Back-end coverage](docs/coverage/back.png)
+
+*Back end (JaCoCo)*
 
 ## Known limits
 
