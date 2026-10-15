@@ -1,17 +1,18 @@
 # Manual tests — Yoga App
 
-Manual tests that record how the application behaves before any change, defects included. They guard against regressions: replayed after each block of changes, they show that nothing else has changed, until automated tests take over. The references (`UI-01`, `DATA-02`…) point to the problems described in [the audit](AUDIT.md).
+Manual tests that record how the application behaved before any change, defects included. They guarded against regressions while the code was refactored and fixed: replayed after each block of changes, they showed that nothing else had changed. Automated tests have now taken over. The integration tests of the back cover the API cases of sections 2 to 4, except an expired token. The end-to-end tests go through the scenarios of section 5 with a simulated API, and the back tests check what these scenarios change in the database. The references (`UI-01`, `DATA-02`…) point to the problems described in [the audit](AUDIT.md).
 
-In the tables, "Today" is the current behaviour, and "Target" the behaviour once the [plan](AUDIT.md#6-plan) is carried out. A target in bold differs from today: it is a deliberate change, not a regression.
+In the tables, "Today" is the behaviour of the starter, and "Target" the behaviour once the [plan](AUDIT.md#6-plan) is carried out, which is now the behaviour of the application. A target in bold differs from today: it is a deliberate change, not a regression.
 
 ## 1. Starting state
 
-Admin account (see `back/README.md`), two teachers, no session, no other user. To return to it, empty the three tables below, then run `insert_user.sql`:
+Admin account and two teachers, no session, no other user. To return to it, empty the four tables below, then run `insert_user.sql` and `insert_teachers.sql` again:
 
 ```sql
 SET FOREIGN_KEY_CHECKS=0;
 TRUNCATE TABLE participate;
 TRUNCATE TABLE sessions;
+TRUNCATE TABLE teachers;
 TRUNCATE TABLE users;
 SET FOREIGN_KEY_CHECKS=1;
 ```

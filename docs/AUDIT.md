@@ -124,9 +124,9 @@ The notes under a table explain the problems that need it. Line numbers refer to
 
 | Problem | Where | Severity |
 |---|---|:-:|
-| **CLEAN-01** — Dead code: `AuthEntryPointJwt` entirely commented out but still a `@Component`, unused injections in `AppComponent` and `DetailComponent` | several files | 🟡 |
+| **CLEAN-01** — Dead code: `AuthEntryPointJwt` entirely commented out but still a `@Component`, unused injections in `AppComponent` and `DetailComponent`, 19 of the 28 modules of `MaterialModule`, a test helper imported nowhere | several files | 🟡 |
 | **CLEAN-02** — Misleading names: the two `DELETE` handlers are called `save` | `SessionController.java` l. 80, `UserController.java` l. 47 | 🟡 |
-| **CLEAN-03** — Inconsistent injection: `@Autowired` fields next to constructor injection on the back; guard constructors next to `inject()` on the front | `SessionMapper`, `AuthTokenFilter`, `WebSecurityConfig`, `guards/` | 🟡 |
+| **CLEAN-03** — Inconsistent injection: `@Autowired` fields next to constructor injection on the back; constructors in the guards and the HTTP services next to `inject()` on the front | `SessionMapper`, `AuthTokenFilter`, `WebSecurityConfig`, `guards/`, `core/service/` | 🟡 |
 | **CLEAN-04** — Untyped responses (`ResponseEntity<?>`), whole objects written to the log (`log.info(sessionDto)`), deprecated jjwt and Spring Security calls | controllers, `security/` | 🟡 |
 | **CLEAN-05** — Annotations where they do not apply: `@Repository` on Spring Data interfaces, `@Component` on MapStruct mappers, `@NonNull` on a primitive | `repository/`, `mapper/`, `User.java` l. 68, `UserDto.java` l. 32 | 🟡 |
 
@@ -141,7 +141,7 @@ The notes under a table explain the problems that need it. Line numbers refer to
 | **TOOL-05** — Moving tag `mysql:latest`: 9.1 in the README, 26.7 today | `back/compose.yaml` l. 3 | 🟠 |
 | **TOOL-06** — Postman collection out of date: its Bearer token is hard-coded and expired, and its sample values do not match the seed data (`create` targets teacher 5; `user / delete` targets user 1, the admin account) | `back/postman/` | 🟡 |
 | **TOOL-07** — Build warnings: `tsconfig.json` targets `es2020` and is overridden by the CLI, placeholder `project-name:build` in the `serve` options, initial bundle over budget | `tsconfig.json` l. 19, `angular.json` l. 84 | 🟡 |
-| **TOOL-08** — Unused dependencies: `@angular/flex-layout` (deprecated and never imported, so its 49 `fx*` attributes in the templates have no effect), `@briebug/jest-schematic` (one-shot generator) | `front/package.json`, 7 templates | 🟡 |
+| **TOOL-08** — Unused dependencies: `@angular/flex-layout` (deprecated and never imported, so its 49 `fx*` attributes in the templates have no effect), `@briebug/jest-schematic` (one-shot generator), `jest-marbles`, `jest-html-reporter`, `@istanbuljs/nyc-config-typescript` and `istanbul-lib-coverage` (never used), `@angular-builders/jest` (its `ng test` target fails on every suite) | `front/package.json`, `angular.json`, 7 templates | 🟡 |
 | **TOOL-09** — No Maven Wrapper: building requires a local Maven of a suitable version | `back/` | 🟡 |
 
 ### 3.8 Tests
@@ -184,8 +184,9 @@ The notes under a table explain the problems that need it. Line numbers refer to
 
 ## 5. Limits of the project
 
-- **Angular 19**: the project stays on the version delivered with the starter, although it is no longer maintained (131 vulnerabilities reported by npm, 8 of them in Angular itself; most can only be fixed by a major upgrade).
-- **Spring Boot 3.5**: the project stays on the version delivered with the starter, although its free support ended on 30 June 2026.
+- **Angular 19**: the project stays on the version delivered with the starter, although it is no longer maintained (118 vulnerabilities reported by npm, 8 of them in Angular itself; most can only be fixed by a major upgrade).
+- **Spring Boot 3.5**: the project stays on the 3.5 line delivered with the starter, updated to its latest patch release, although its free support ended on 30 June 2026.
+- **MySQL 26.7**: the image is pinned to the version the databases were created with. It is an innovation release: moving to a long-term version means recreating the database.
 - **Login state**: kept in memory only, so reloading the page logs the user out. This is the safest place for the token; it is kept as is.
 
 ## 6. Plan

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SessionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yoga-app</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.starterjwt.controllers</a> &gt; <span class="el_source">SessionController.java</span></div><h1>SessionController.java</h1><pre class="source lang-java linenums">package com.openclassrooms.starterjwt.controllers;
+
+import com.openclassrooms.starterjwt.dto.SessionDto;
+import com.openclassrooms.starterjwt.mapper.SessionMapper;
+import com.openclassrooms.starterjwt.models.Session;
+import com.openclassrooms.starterjwt.services.SessionService;
+import jakarta.validation.Valid;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/session&quot;)
+<span class="fc" id="L23">@Log4j2</span>
+public class SessionController {
+    private final SessionMapper sessionMapper;
+    private final SessionService sessionService;
+
+    public SessionController(SessionService sessionService,
+<span class="fc" id="L29">            SessionMapper sessionMapper) {</span>
+<span class="fc" id="L30">        this.sessionMapper = sessionMapper;</span>
+<span class="fc" id="L31">        this.sessionService = sessionService;</span>
+<span class="fc" id="L32">    }</span>
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;SessionDto&gt; findById(@PathVariable(&quot;id&quot;) Long id) {
+<span class="fc" id="L36">        Session session = this.sessionService.getById(id);</span>
+
+<span class="fc" id="L38">        return ResponseEntity.ok().body(this.sessionMapper.toDto(session));</span>
+    }
+
+    @GetMapping()
+    public ResponseEntity&lt;List&lt;SessionDto&gt;&gt; findAll() {
+<span class="fc" id="L43">        List&lt;Session&gt; sessions = this.sessionService.findAll();</span>
+
+<span class="fc" id="L45">        return ResponseEntity.ok().body(this.sessionMapper.toDto(sessions));</span>
+    }
+
+    @PostMapping()
+    public ResponseEntity&lt;SessionDto&gt; create(@Valid @RequestBody SessionDto sessionDto) {
+<span class="fc" id="L50">        Session session = this.sessionService.create(sessionDto);</span>
+
+<span class="fc" id="L52">        log.info(&quot;Session {} created&quot;, session.getId());</span>
+<span class="fc" id="L53">        return ResponseEntity.ok().body(this.sessionMapper.toDto(session));</span>
+    }
+
+    @PutMapping(&quot;{id}&quot;)
+    public ResponseEntity&lt;SessionDto&gt; update(@PathVariable(&quot;id&quot;) Long id, @Valid @RequestBody SessionDto sessionDto) {
+<span class="fc" id="L58">        Session session = this.sessionService.update(id, sessionDto);</span>
+
+<span class="fc" id="L60">        return ResponseEntity.ok().body(this.sessionMapper.toDto(session));</span>
+    }
+
+    @DeleteMapping(&quot;{id}&quot;)
+    public ResponseEntity&lt;Void&gt; delete(@PathVariable(&quot;id&quot;) Long id) {
+<span class="fc" id="L65">        this.sessionService.delete(id);</span>
+<span class="fc" id="L66">        return ResponseEntity.ok().build();</span>
+    }
+
+    @PostMapping(&quot;{id}/participate/{userId}&quot;)
+    public ResponseEntity&lt;Void&gt; participate(@PathVariable(&quot;id&quot;) Long id, @PathVariable(&quot;userId&quot;) Long userId) {
+<span class="fc" id="L71">        this.sessionService.participate(id, userId);</span>
+
+<span class="fc" id="L73">        return ResponseEntity.ok().build();</span>
+    }
+
+    @DeleteMapping(&quot;{id}/participate/{userId}&quot;)
+    public ResponseEntity&lt;Void&gt; noLongerParticipate(@PathVariable(&quot;id&quot;) Long id, @PathVariable(&quot;userId&quot;) Long userId) {
+<span class="fc" id="L78">        this.sessionService.noLongerParticipate(id, userId);</span>
+
+<span class="fc" id="L80">        return ResponseEntity.ok().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
