@@ -2,8 +2,8 @@
   @if (session) {
     <mat-card>
       <mat-card-title>
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-          <div fxLayout="row" fxLayoutAlign="start center">
+        <div>
+          <div>
             <button mat-icon-button (click)="back()">
               <mat-icon>arrow_back</mat-icon>
             </button>
@@ -35,22 +35,22 @@
       </mat-card-title>
       @if (teacher) {
         <mat-card-subtitle>
-          <div fxLayoutAlign="start center" class="ml3">
+          <div class="ml3">
             <mat-icon> people </mat-icon>
             <span class="ml1">{{ teacher.firstName }} {{ teacher.lastName | uppercase }}</span>
           </div>
         </mat-card-subtitle>
       }
-      <div mat-card-image fxLayoutAlign="center center">
+      <div mat-card-image>
         <img class="picture" src="../../../../../assets/sessions.png" alt="Yoga session" />
       </div>
       <mat-card-content>
-        <div class="my2" fxLayout="row" fxLayoutAlign="space-between center">
-          <div fxLayoutAlign="start center">
+        <div class="my2">
+          <div>
             <mat-icon> group </mat-icon>
             <span class="ml1">{{ session.users.length }} attendees</span>
           </div>
-          <div fxLayoutAlign="start center">
+          <div>
             <mat-icon> calendar_month </mat-icon>
             <span class="ml1">{{ session.date | date: 'longDate' }}</span>
           </div>
@@ -60,7 +60,7 @@
           {{ session.description }}
           <br />
         </div>
-        <div class="date" class="my2" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="date" class="my2">
           <div class="created"><i>Create at: </i> {{ session.createdAt | date: 'longDate' }}</div>
           <div class="updated"><i>Last update: </i> {{ session.updatedAt | date: 'longDate' }}</div>
         </div>

@@ -1,6 +1,6 @@
 <div class="list">
   <mat-card>
-    <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-header>
       <mat-card-title class="m0">Sessions available</mat-card-title>
       @if (user?.admin) {
         <button mat-raised-button color="primary" routerLink="create">
@@ -9,16 +9,16 @@
         </button>
       }
     </mat-card-header>
-    <div class="items mt2" fxLayout="row wrap" fxLayout.lt-md="column">
+    <div class="items mt2">
       @for (session of sessions$ | async; track session.id) {
-        <mat-card class="item" fxFlex>
+        <mat-card class="item">
           <mat-card-header>
             <mat-card-title>{{ session.name }}</mat-card-title>
             <mat-card-subtitle>
               Session on {{ session.date | date: 'longDate' }}
             </mat-card-subtitle>
           </mat-card-header>
-          <div mat-card-image fxLayoutAlign="center center">
+          <div mat-card-image>
             <img class="picture" src="../../../../../assets/sessions.png" alt="Yoga session" />
           </div>
           <mat-card-content>
