@@ -1,14 +1,14 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    image: 'mysql:26.7.0'
     container_name: 'back_mysql'
     environment:
       - 'MYSQL_DATABASE=${DB_NAME}'
       - 'MYSQL_USER=${DB_USER}'
       - 'MYSQL_PASSWORD=${DB_PASSWORD}'
-      - 'MYSQL_ROOT_PASSWORD=root_password'
+      - 'MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}'
     ports:
-      - '3306'
+      - '127.0.0.1::3306'
     volumes:
       - db_data:/var/lib/mysql
 volumes:
