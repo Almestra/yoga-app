@@ -1,7 +1,4 @@
 module.exports = {
-  moduleNameMapper: {
-    '@core/(.*)': '<rootDir>/src/app/core/$1',
-  },
   preset: 'jest-preset-angular',
   testEnvironment: 'jest-preset-angular/environments/jest-jsdom-env',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],

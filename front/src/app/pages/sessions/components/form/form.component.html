@@ -1,7 +1,7 @@
 <div class="create m3">
   <mat-card>
     <mat-card-title>
-      <div fxLayout="row" fxLayoutAlign="start center">
+      <div>
         <button mat-icon-button routerLink="/sessions">
           <mat-icon>arrow_back</mat-icon>
         </button>
@@ -14,13 +14,13 @@
     </mat-card-title>
     @if (sessionForm) {
       <mat-card-content>
-        <form class="mt2" fxLayout="column" [formGroup]="sessionForm" (ngSubmit)="submit()">
-          <mat-form-field appearance="outline" class="" fxFlex>
+        <form class="mt2" [formGroup]="sessionForm" (ngSubmit)="submit()">
+          <mat-form-field appearance="outline" class="">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name" />
             <mat-error>{{ sessionForm.get('name')?.errors | validationMessage }}</mat-error>
           </mat-form-field>
-          <mat-form-field appearance="outline" fxFlex>
+          <mat-form-field appearance="outline">
             <mat-label>Date</mat-label>
             <input matInput type="date" formControlName="date" />
             <mat-error>{{ sessionForm.get('date')?.errors | validationMessage }}</mat-error>
@@ -36,12 +36,12 @@
             </mat-select>
             <mat-error>{{ sessionForm.get('teacher_id')?.errors | validationMessage }}</mat-error>
           </mat-form-field>
-          <mat-form-field appearance="outline" fxFlex>
+          <mat-form-field appearance="outline">
             <mat-label>Description</mat-label>
             <textarea matInput rows="8" formControlName="description"></textarea>
             <mat-error>{{ sessionForm.get('description')?.errors | validationMessage }}</mat-error>
           </mat-form-field>
-          <div fxLayout="row" fxLayoutAlign="center center">
+          <div>
             <button
               mat-raised-button
               color="primary"

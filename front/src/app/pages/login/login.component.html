@@ -1,15 +1,15 @@
-<div class="login" fxLayout="row" fxLayoutAlign="center center">
+<div class="login">
   <mat-card>
-    <mat-card-header fxLayoutAlign="center center">
+    <mat-card-header>
       <mat-card-title>Login</mat-card-title>
     </mat-card-header>
     <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
-      <mat-card-content fxLayout="column">
-        <mat-form-field fxFlex>
+      <mat-card-content>
+        <mat-form-field>
           <input matInput placeholder="Email" formControlName="email" />
           <mat-error>{{ form.controls.email.errors | validationMessage }}</mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex>
+        <mat-form-field>
           <input
             matInput
             [type]="hide ? 'password' : 'text'"
